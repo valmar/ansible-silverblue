@@ -1,0 +1,123 @@
+---
+- name: Remove the fedora flatpak remote
+  become: true
+  community.general.flatpak_remote:
+    name: fedora
+    state: absent
+  register: fedora_flatpak_remote
+
+- name: Remove the fedora-testing flatpak remote
+  become: true
+  community.general.flatpak_remote:
+    name: fedora-testing
+    state: absent
+
+- name: Remove system flatpaks 
+  become: true
+  community.general.flatpak:
+    name:
+      - org.fedoraproject.Platform
+      - org.fedoraproject.MediaWriter
+      - org.gnome.Calculator
+      - org.gnome.Calendar
+      - org.gnome.Characters
+      - org.gnome.Connections
+      - org.gnome.Contacts
+      - org.gnome.Evince
+      - org.gnome.Extensions
+      - org.gnome.Logs
+      - org.gnome.Loupe
+      - org.gnome.Maps
+      - org.gnome.NautilusPreviewer
+      - org.gnome.Snapshot
+      - org.gnome.TextEditor
+      - org.gnome.Weather
+      - org.gnome.baobab
+      - org.gnome.clocks
+      - org.gnome.font-viewer
+    state: absent
+    remote: fedora
+    method: system
+  #when: fedora_flatpak_remote.changed == true
+
+- name: Reinstall system flatpaks from Flathub
+  become: true
+  community.general.flatpak:
+    name:
+      - org.fedoraproject.MediaWriter
+      - org.gnome.Calculator
+      - org.gnome.Calendar
+      - org.gnome.Characters
+      - org.gnome.Connections
+      - org.gnome.Contacts
+      - org.gnome.Evince
+      - org.gnome.Extensions
+      - org.gnome.Logs
+      - org.gnome.Loupe
+      - org.gnome.Maps
+      - org.gnome.NautilusPreviewer
+      - org.gnome.Snapshot
+      - org.gnome.TextEditor
+      - org.gnome.Weather
+      - org.gnome.baobab
+      - org.gnome.clocks
+      - org.gnome.font-viewer
+    state: present
+    remote: flathub
+    method: system
+  #when: fedora_flatpak_remote.changed == true
+
+- name: Install additional flatpaks from Flathub
+  become: true
+  community.general.flatpak:
+    name:
+      - ca.desrt.dconf-editor
+      - ch.protonmail.protonmail-bridge
+      - com.discordapp.Discord
+      - com.github.jeromerobert.pdfarranger
+      - com.github.johnfactotum.Foliate
+      - com.github.marhkb.Pods
+      - com.github.tchx84.Flatseal
+      - com.github.vladimiry.ElectronMail
+      - com.github.zocker_160.SyncThingy
+      - com.makemkv.MakeMKV
+      - com.mattjakeman.ExtensionManager
+      - com.microsoft.Edge
+      - com.protonvpn.www
+      - com.raggesilver.BlackBox
+      - com.skype.Client
+      - com.slack.Slack
+      - com.tutanota.Tutanota
+      - com.visualstudio.code
+      - com.vivaldi.Vivaldi
+      - de.haeckerfelix.Shortwave
+      - im.riot.Riot
+      - io.github.celluloid_player.Celluloid
+      - io.github.dvlv.boxbuddyrs
+      - io.github.flattool.Warehouse
+      - io.github.realmazharhussain.GdmSettings
+      - io.gitlab.news_flash.NewsFlash
+      - io.missioncenter.MissionCenter
+      - io.podman_desktop.PodmanDesktop
+      - net.cozic.joplin_desktop
+      - net.mullvad.MullvadBrowser
+      - org.bunkus.mkvtoolnix-gui
+      - org.cockpit_project.CockpitClient
+      - org.gnome.Boxes
+      - org.gnome.Builder
+      - org.gnome.Epiphany
+      - org.gnome.Evolution
+      - org.gnome.Geary
+      - org.gnome.Podcasts
+      - org.gnome.gitlab.somas.Apostrophe
+      - org.gustavoperedo.FontDownloader
+      - org.libreoffice.LibreOffice
+      - org.localsend.localsend_app
+      - org.mozilla.Thunderbird
+      - org.mozilla.firefox
+      - org.signal.Signal
+      - org.telegram.desktop
+      - us.zoom.Zoom
+    state: present
+    remote: flathub
+    method: system

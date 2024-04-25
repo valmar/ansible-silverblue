@@ -1,0 +1,44 @@
+---
+- name: Check if Distrobox is already installed
+  stat: 
+    path: /usr/local/bin/distrobox
+  register: distrobox
+
+- name: Install Distrobox
+  block:
+
+    - name: Download Distrbox installer
+      become: true
+      ansible.builtin.get_url: 
+        url:  https://raw.githubusercontent.com/89luca89/distrobox/main/install 
+        dest: /tmp/install
+        mode: '755'
+
+    - name: Allow valmar user to run sudo commands without password
+      become: true
+      community.general.sudoers:
+        name: valmar-sudo
+        user: valmar
+        commands: ALL
+        nopassword: true
+        state: present
+
+    - name: Execute Distrobox installer
+      become: true
+      become_user: valmar
+      ansible.builtin.shell:
+        cmd: /tmp/install
+
+    - name: Remove Distrobox installer
+      become: true
+      ansible.builtin.file: 
+        path: /tmp/install 
+        state: absent
+
+    - name: Revoke previous sudo grants
+      become: true
+      community.general.sudoers:
+        name: valmar-sudo
+        state: absent
+
+  when: distrobox.stat.exists == false 

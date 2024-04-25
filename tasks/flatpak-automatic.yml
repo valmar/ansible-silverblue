@@ -1,0 +1,27 @@
+---
+- name: Create flatpak-automatic service file
+  become: true
+  ansible.builtin.copy:
+    src: 'flatpak-automatic.service'
+    dest: '/etc/systemd/system/flatpak-automatic.service'
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+    backup: true
+
+- name: Create flatpak-automatic timer file
+  become: true
+  ansible.builtin.copy:
+    src: 'flatpak-automatic.timer'
+    dest: '/etc/systemd/system/flatpak-automatic.timer'
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+    backup: true
+
+- name: Enable and start flat-automatic timer
+  become: true
+  ansible.builtin.systemd:
+    name: 'flatpak-automatic.timer'
+    state: started
+    enabled: true

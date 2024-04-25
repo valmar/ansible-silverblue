@@ -1,0 +1,8 @@
+---
+- name: Configure Fedora Silverblue
+  hosts: all
+  tasks:
+    - import_tasks: tasks/flathub.yml
+    - import_tasks: tasks/flatpak.yml
+    - import_tasks: tasks/flatpak-automatic.yml
+    - import_tasks: tasks/distrobox.yml  
